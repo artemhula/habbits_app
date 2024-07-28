@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:habits/models/habit.dart';
+import 'package:habits/models/habit_completion.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -44,4 +47,92 @@ class HabitDatabase {
     ''');
   }
 
+  Future close() async {
+    final db = await database;
+    db.close();
+  }
+
+  Future saveFirstEntryDate() async {
+    final db = await database;
+    if ((await db.query('app_info')).isEmpty) {
+      await db
+          .insert('app_info', {'first_entry_date': DateTime.now().toString()});
+    }
+  }
+
+  Future<DateTime> getFirstEntryDate() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('app_info');
+    return DateTime.parse(maps[0]['first_entry_date']);
+  }
+
+  Future addHabit(String name) async {
+    final db = await database;
+    await db.insert('habits', {'name': name});
+  }
+
+  Future deleteHabit(int id) async {
+    final db = await database;
+    await db.delete('habits', where: 'id = ?', whereArgs: [id]);
+    // await db.delete('habit_completions', where: 'habit_id = ?', whereArgs: [id]);
+  }
+
+  Future addHabitCompletion(int habitId) async {
+    final db = await database;
+    await db.insert('habit_completions',
+        {'habit_id': habitId, 'date': DateUtils.dateOnly(DateTime.now()).toString()});
+  }
+
+  Future deleteHabitCompetion(int habitId, String date) async {
+    final db = await database;
+    await db.delete('habit_completions',
+        where: 'habit_id = ? AND date = ?', whereArgs: [habitId, date]);
+  }
+
+  Future toggleHabitCompletion(int habitId, DateTime date) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('habit_completions',
+        where: 'habit_id = ? AND date = ?', whereArgs: [habitId, DateUtils.dateOnly(DateTime.now())]);
+    if (maps.isEmpty) {
+      addHabitCompletion(habitId);
+    } else {
+      deleteHabitCompetion(habitId, DateUtils.dateOnly(DateTime.now()).toString());
+    }
+  }
+
+  Future<List<Habit>> getHabits() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('habits');
+    return List.generate(maps.length, (i) {
+      return Habit(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+      );
+    });
+  }
+
+  Future<List<HabitCompletion>> getHabitCompletionsByHabit(int habitId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('habit_completions',
+        where: 'habit_id = ?', whereArgs: [habitId]);
+    return List.generate(maps.length, (i) {
+      return HabitCompletion(
+        id: maps[i]['id'],
+        habitId: maps[i]['habit_id'],
+        date: DateTime.parse(maps[i]['date']),
+      );
+    });
+  }
+
+  Future<List<HabitCompletion>> getAllHabitCompletions() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('habit_completions');
+    return List.generate(maps.length, (i) {
+      return HabitCompletion(
+        id: maps[i]['id'],
+        habitId: maps[i]['habit_id'],
+        date: DateTime.parse(maps[i]['date']),
+      );
+    });
+  }
 }
