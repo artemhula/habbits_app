@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habits/database/sqlite_database.dart';
 import 'package:habits/models/habit.dart';
 import 'package:habits/models/habit_completion.dart';
-import 'package:habits/theme/theme_provider.dart';
+import 'package:habits/provider/theme_provider.dart';
+import 'package:habits/repository/habit_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:habits/locator.dart';
 
@@ -46,7 +46,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  sl<HabitDatabase>().addHabit(habitNameController.text);
+                  sl<HabitRepository>().addHabit(habitNameController.text);
                   habitNameController.clear();
                 },
                 child: const Text('Add'),
@@ -101,7 +101,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ? Icons.check_box
                     : Icons.check_box_outline_blank,
               ),
-              onPressed: () => sl<HabitDatabase>().toggleHabitCompletion(habit.id, DateTime.now()),
+              onPressed: () => sl<HabitRepository>().updateHabitCompletion(habit.id),
             ),
           );
         },

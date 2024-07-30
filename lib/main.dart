@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habits/locator.dart';
 import 'package:habits/screens/calendar_screen.dart';
-import 'package:habits/theme/theme_provider.dart';
+import 'package:habits/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

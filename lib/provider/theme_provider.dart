@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habits/theme/themes.dart';
+import 'package:habits/themes.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeData _theme = lightTheme;

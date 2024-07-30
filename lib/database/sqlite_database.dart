@@ -89,7 +89,7 @@ class HabitDatabase {
         where: 'habit_id = ? AND date = ?', whereArgs: [habitId, date]);
   }
 
-  Future toggleHabitCompletion(int habitId, DateTime date) async {
+  Future toggleHabitCompletion(int habitId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('habit_completions',
         where: 'habit_id = ? AND date = ?', whereArgs: [habitId, DateUtils.dateOnly(DateTime.now())]);
