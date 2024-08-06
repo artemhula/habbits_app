@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:habits/locator.dart';
 import 'package:habits/screens/calendar_screen.dart';
 import 'package:habits/provider/theme_provider.dart';
+import 'package:habits/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
   runApp(
-    ChangeNotifierProvider(
-      create: (BuildContext context) => sl<ThemeProvider>(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) => sl<ThemeProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => sl<HabitProvider>(),
+        ),
+      ],
       child: const HabitApp(),
     ),
   );

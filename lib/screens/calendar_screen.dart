@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habits/models/habit.dart';
-import 'package:habits/models/habit_completion.dart';
+import 'package:provider/provider.dart';
+import 'package:habits/provider/habit_provider.dart';
 import 'package:habits/provider/theme_provider.dart';
 import 'package:habits/repository/habit_repository.dart';
-import 'package:provider/provider.dart';
 import 'package:habits/locator.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -15,8 +14,6 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   var habitNameController = TextEditingController();
-  List<Habit> habits = [];
-  List<HabitCompletion> habitComplections = [];
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +45,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 onPressed: () {
                   sl<HabitRepository>().addHabit(habitNameController.text);
                   habitNameController.clear();
+                  Navigator.pop(context);
                 },
                 child: const Text('Add'),
               ),
@@ -85,24 +83,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: habits.length,
-        itemBuilder: (context, index) {
-          final habit = habits[index];
-          return ListTile(
-            title: Text(habit.name),
-            trailing: IconButton(
-              icon: Icon(
-                habitComplections.any((c) =>
-                        c.habitId == habit.id &&
-                        c.date.year == DateTime.now().year &&
-                        c.date.month == DateTime.now().month &&
-                        c.date.day == DateTime.now().day)
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank,
-              ),
-              onPressed: () => sl<HabitRepository>().updateHabitCompletion(habit.id),
-            ),
+      body: Consumer<HabitProvider>(
+        builder: (context, habitProvider, child) {
+          return ListView.builder(
+            itemCount: habitProvider.habits.length,
+            itemBuilder: (context, index) {
+              final habit = habitProvider.habits[index];
+              final isCompleted = habitProvider.habitCompletions.any((c) =>
+                  c.habitId == habit.id &&
+                  c.date.year == DateTime.now().year &&
+                  c.date.month == DateTime.now().month &&
+                  c.date.day == DateTime.now().day);
+              return ListTile(
+                title: Text(habit.name),
+                trailing: IconButton(
+                  icon: Icon(
+                    isCompleted
+                        ? Icons.check_box
+                        : Icons.check_box_outline_blank,
+                  ),
+                  onPressed: () =>
+                      sl<HabitRepository>().updateHabitCompletion(habit.id),
+                ),
+              );
+            },
           );
         },
       ),
