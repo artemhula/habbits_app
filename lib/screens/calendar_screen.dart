@@ -85,28 +85,46 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
       body: Consumer<HabitProvider>(
         builder: (context, habitProvider, child) {
-          return ListView.builder(
-            itemCount: habitProvider.habits.length,
-            itemBuilder: (context, index) {
-              final habit = habitProvider.habits[index];
-              final isCompleted = habitProvider.habitCompletions.any((c) =>
-                  c.habitId == habit.id &&
-                  c.date.year == DateTime.now().year &&
-                  c.date.month == DateTime.now().month &&
-                  c.date.day == DateTime.now().day);
-              return ListTile(
-                title: Text(habit.name),
-                trailing: IconButton(
-                  icon: Icon(
-                    isCompleted
-                        ? Icons.check_box
-                        : Icons.check_box_outline_blank,
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              itemCount: habitProvider.habits.length,
+              itemBuilder: (context, index) {
+                final habit = habitProvider.habits[index];
+                final isCompleted = habitProvider.habitCompletions.any((c) =>
+                    c.habitId == habit.id &&
+                    c.date.year == DateTime.now().year &&
+                    c.date.month == DateTime.now().month &&
+                    c.date.day == DateTime.now().day);
+                return GestureDetector(
+                  onTap: () => sl<HabitRepository>().updateHabitCompletion(habit.id),
+                  child: ListTile(
+                    title: Text(habit.name),
+                    textColor: isCompleted
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.inverseSurface,
+                    tileColor: isCompleted
+                        ? Theme.of(context).colorScheme.tertiary
+                        : Theme.of(context).listTileTheme.tileColor,
+                    trailing: IconButton(
+                      icon: Icon(
+                        isCompleted
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank,
+                        color: isCompleted
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.inverseSurface,
+                      ),
+                      onPressed: () {},
+                    ),
                   ),
-                  onPressed: () =>
-                      sl<HabitRepository>().updateHabitCompletion(habit.id),
-                ),
-              );
-            },
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(height: 10);
+              },
+            ),
           );
         },
       ),

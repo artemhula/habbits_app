@@ -5,6 +5,7 @@ ThemeData lightTheme = ThemeData(
   colorScheme: ColorScheme.light(
     surface: Colors.grey[300]!,
     primary: Colors.grey[200]!,
+    tertiary: Colors.green[400]!,
     inverseSurface: Colors.grey[900],
   ),
   textTheme: GoogleFonts.manropeTextTheme(),
@@ -18,12 +19,20 @@ ThemeData lightTheme = ThemeData(
     selectionColor: Colors.grey[800],
     selectionHandleColor: Colors.grey[800],
   ),
+  listTileTheme: ListTileThemeData(
+    tileColor: Colors.grey[100],
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
     surface: Colors.grey[900]!,
     primary: Colors.grey[800]!,
+    tertiary: Colors.green[400]!,
     inverseSurface: Colors.grey[300],
   ),
   textTheme: GoogleFonts.manropeTextTheme().apply(
@@ -39,5 +48,12 @@ ThemeData darkTheme = ThemeData(
     cursorColor: Colors.grey[300],
     selectionColor: Colors.grey[300],
     selectionHandleColor: Colors.grey[300],
+  ),
+  listTileTheme: ListTileThemeData(
+    tileColor: Colors.grey[900],
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
   ),
 );
