@@ -55,8 +55,7 @@ class HabitDatabase {
   Future saveFirstEntryDate() async {
     final db = await database;
     if ((await db.query('app_info')).isEmpty) {
-      await db
-          .insert('app_info', {'first_entry_date': DateTime.now().toString()});
+      await db.insert('app_info', {'first_entry_date': DateTime.now().toIso8601String()});
     }
   }
 
@@ -80,7 +79,7 @@ class HabitDatabase {
   Future addHabitCompletion(int habitId) async {
     final db = await database;
     await db.insert('habit_completions',
-        {'habit_id': habitId, 'date': DateUtils.dateOnly(DateTime.now()).toString()});
+        {'habit_id': habitId, 'date': DateUtils.dateOnly(DateTime.now()).toIso8601String()});
   }
 
   Future deleteHabitCompetion(int habitId, String date) async {
@@ -92,11 +91,11 @@ class HabitDatabase {
   Future toggleHabitCompletion(int habitId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('habit_completions',
-        where: 'habit_id = ? AND date = ?', whereArgs: [habitId, DateUtils.dateOnly(DateTime.now())]);
+        where: 'habit_id = ? AND date = ?', whereArgs: [habitId, DateUtils.dateOnly(DateTime.now()).toIso8601String()]);
     if (maps.isEmpty) {
       addHabitCompletion(habitId);
     } else {
-      deleteHabitCompetion(habitId, DateUtils.dateOnly(DateTime.now()).toString());
+      deleteHabitCompetion(habitId, DateUtils.dateOnly(DateTime.now()).toIso8601String());
     }
   }
 
