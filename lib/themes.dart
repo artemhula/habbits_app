@@ -50,7 +50,7 @@ ThemeData darkTheme = ThemeData(
     selectionHandleColor: Colors.grey[300],
   ),
   listTileTheme: ListTileThemeData(
-    tileColor: Colors.grey[900],
+    tileColor: Colors.grey[800],
     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
