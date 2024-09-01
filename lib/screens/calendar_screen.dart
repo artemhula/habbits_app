@@ -1,8 +1,8 @@
-import 'dart:ui';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
-import 'package:habits/utils/habit_completion_util.dart';
+import 'package:habits/screens/chart_screen.dart';
+import 'package:habits/utils/habit_util.dart';
+import 'package:habits/widgets/habit_map.dart';
 import 'package:provider/provider.dart';
 import 'package:habits/provider/habit_provider.dart';
 import 'package:habits/provider/theme_provider.dart';
@@ -22,7 +22,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -85,28 +84,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 color: Theme.of(context).colorScheme.inverseSurface,
               ),
             ),
-            onTap: () => null,
+            onTap: () => Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => ChartScreen())),
           ),
         ],
       ),
       body: Consumer<HabitProvider>(
         builder: (context, habitProvider, child) {
-          final datasets = sl<HabitCompletionUtil>()
-              .getDatasetsForHeatMap(habitProvider.habitCompletions);
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
+          final datasets =
+              sl<HabitUtil>().getDatasets(habitProvider.habitCompletions);
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  HeatMap(
+                  HabitMap(
                     datasets: datasets,
                     startDate: habitProvider.firstEntryDate,
-                    scrollable: true,
-                    showColorTip: false,
-                    colorsets: const {
-                      1: Colors.red,
-                    },
                     onClick: (value) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(datasets[value].toString())));

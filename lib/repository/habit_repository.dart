@@ -28,6 +28,7 @@ class HabitRepositoryImpl implements  HabitRepository {
   @override
   Future addHabitCompletion(int habitId) async {
     await _db.addHabitCompletion(habitId);
+    print('habitId: $habitId');
     _provider.habitCompletions = await _db.getAllHabitCompletions();
   }
 
@@ -61,6 +62,7 @@ class HabitRepositoryImpl implements  HabitRepository {
     _provider.habits = await _db.getHabits();
     _provider.habitCompletions = await _db.getAllHabitCompletions();
     _provider.firstEntryDate = await _db.getFirstEntryDate();
+    _provider.pickedHabitId = _provider.habits[0].id;
   }
 
 }
