@@ -63,4 +63,25 @@ class HabitUtil {
     }).toList();
     return barGroups;
   }
+
+  int getStreak(List<HabitCompletion> habitCompletions) {
+    final datasets = getDatasets(habitCompletions);
+    if (datasets.isEmpty) {
+      return 0;
+    }
+    if (!datasets.containsKey(DateUtils.dateOnly(DateTime.now()))) {
+      return 0;
+    }
+    int streak = 1;
+    while (true) {
+      DateTime yesterday =
+          DateUtils.dateOnly(DateTime.now()).subtract(Duration(days: streak));
+      if (datasets.containsKey(DateUtils.dateOnly(yesterday))) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
 }
