@@ -1,12 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:habits/screens/chart_screen.dart';
 import 'package:habits/utils/habit_util.dart';
+import 'package:habits/widgets/add_habit_dialog.dart';
+import 'package:habits/widgets/chart_button.dart';
+import 'package:habits/widgets/habit_list_tile.dart';
 import 'package:habits/widgets/habit_map.dart';
+import 'package:habits/widgets/strike.dart';
+import 'package:habits/widgets/toggle_theme_button.dart';
 import 'package:provider/provider.dart';
 import 'package:habits/provider/habit_provider.dart';
-import 'package:habits/provider/theme_provider.dart';
 import 'package:habits/repository/habit_repository.dart';
 import 'package:habits/locator.dart';
 
@@ -31,31 +32,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ),
         onPressed: () => showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Add a new habit'),
-            content: SizedBox(
-              width: 300,
-              child: TextField(
-                controller: habitNameController,
-                decoration: const InputDecoration(
-                  hintText: 'Habit name',
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  sl<HabitRepository>().addHabit(habitNameController.text);
-                  habitNameController.clear();
-                  Navigator.pop(context);
-                },
-                child: const Text('Add'),
-              ),
-            ],
+          builder: (context) => AddHabitDialog(
+            habitNameController: habitNameController,
+            onPressed: () {
+              sl<HabitRepository>().addHabit(habitNameController.text);
+              habitNameController.clear();
+              Navigator.pop(context);
+            },
           ),
         ),
       ),
@@ -63,51 +46,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         forceMaterialTransparency: false,
         centerTitle: true,
-        title: Consumer<HabitProvider>(
-          builder:
-              (BuildContext context, HabitProvider provider, Widget? child) {
-            if (provider.streak < 2) {
-              return Container();
-            }
-            return Text(
-              'Strike: ${provider.streak}',
-            )
-                .animate(onPlay: (controller) => controller.repeat())
-                .shimmer(
-                    duration: const Duration(seconds: 2),
-                    color: Theme.of(context).colorScheme.tertiary)
-                .animate()
-                .fadeIn(duration: 1200.ms, curve: Curves.easeOutQuad)
-                .slide();
-          },
-        ),
-        actions: [
-          GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Icon(
-                Provider.of<ThemeProvider>(context).isDarkTheme
-                    ? Icons.wb_sunny_outlined
-                    : Icons.mode_night_outlined,
-                size: 30,
-                color: Theme.of(context).colorScheme.inverseSurface,
-              ),
-            ),
-            onTap: () => Provider.of<ThemeProvider>(context, listen: false)
-                .toggleTheme(),
-          ),
-          GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Icon(
-                Icons.auto_graph_sharp,
-                size: 30,
-                color: Theme.of(context).colorScheme.inverseSurface,
-              ),
-            ),
-            onTap: () => Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => ChartScreen())),
-          ),
+        title: const StrikeWidget(),
+        actions: const [
+          ToggleThemeButton(),
+          ChartButton(),
         ],
       ),
       body: Consumer<HabitProvider>(
@@ -144,27 +86,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           GestureDetector(
                             onTap: () => sl<HabitRepository>()
                                 .updateHabitCompletion(habit.id),
-                            child: ListTile(
-                              title: Text(habit.name),
-                              textColor: isCompleted
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .inverseSurface,
-                              tileColor: isCompleted
-                                  ? Theme.of(context).colorScheme.tertiary
-                                  : Theme.of(context).listTileTheme.tileColor,
-                              trailing: Icon(
-                                isCompleted
-                                    ? Icons.check_box
-                                    : Icons.check_box_outline_blank,
-                                color: isCompleted
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .inverseSurface,
-                              ),
-                            ),
+                            child: HabitListTile(
+                                habit: habit, isCompleted: isCompleted),
                           ),
                           if (index < habitProvider.habits.length - 1)
                             const SizedBox(height: 10),
