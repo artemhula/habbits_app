@@ -3,8 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:habits/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 
-class StrikeWidget extends StatelessWidget {
-  const StrikeWidget({
+class StreakWidget extends StatelessWidget {
+  const StreakWidget({
     super.key,
   });
 
@@ -16,11 +16,11 @@ class StrikeWidget extends StatelessWidget {
           return Container();
         }
         return Text(
-          'Strike: ${provider.streak}',
+          'Streak: ${provider.streak}',
         )
             .animate(onPlay: (controller) => controller.repeat())
             .shimmer(
-                duration: const Duration(seconds: 2),
+                duration: const Duration(seconds: 3),
                 color: Theme.of(context).colorScheme.tertiary)
             .animate()
             .fadeIn(duration: 1200.ms, curve: Curves.easeOutQuad)

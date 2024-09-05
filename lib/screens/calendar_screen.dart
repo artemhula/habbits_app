@@ -4,7 +4,7 @@ import 'package:habits/widgets/add_habit_dialog.dart';
 import 'package:habits/widgets/chart_button.dart';
 import 'package:habits/widgets/habit_list_tile.dart';
 import 'package:habits/widgets/habit_map.dart';
-import 'package:habits/widgets/strike.dart';
+import 'package:habits/widgets/streak.dart';
 import 'package:habits/widgets/toggle_theme_button.dart';
 import 'package:provider/provider.dart';
 import 'package:habits/provider/habit_provider.dart';
@@ -46,7 +46,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         forceMaterialTransparency: false,
         centerTitle: true,
-        title: const StrikeWidget(),
+        title: const StreakWidget(),
         actions: const [
           ToggleThemeButton(),
           ChartButton(),
