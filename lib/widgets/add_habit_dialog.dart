@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:habits/locator.dart';
+import 'package:habits/repository/habit_repository.dart';
 
-class AddHabitDialog extends StatelessWidget {
+class AddHabitDialog extends StatefulWidget {
   const AddHabitDialog({
     super.key,
-    required this.habitNameController,
-    required this.onPressed,
   });
 
-  final TextEditingController habitNameController;
-  final VoidCallback onPressed;
+  @override
+  State<AddHabitDialog> createState() => _AddHabitDialogState();
+}
+
+class _AddHabitDialogState extends State<AddHabitDialog> {
+  var habitNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,11 @@ class AddHabitDialog extends StatelessWidget {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: onPressed,
+          onPressed: () {
+            sl<HabitRepository>().addHabit(habitNameController.text);
+            habitNameController.clear();
+            Navigator.pop(context);
+          },
           child: const Text('Add'),
         ),
       ],

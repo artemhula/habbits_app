@@ -6,20 +6,14 @@ import 'package:habits/widgets/habit_list_tile.dart';
 import 'package:habits/widgets/habit_map.dart';
 import 'package:habits/widgets/streak.dart';
 import 'package:habits/widgets/toggle_theme_button.dart';
+import 'package:habits/widgets/update_habit_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:habits/provider/habit_provider.dart';
 import 'package:habits/repository/habit_repository.dart';
 import 'package:habits/locator.dart';
 
-class CalendarScreen extends StatefulWidget {
+class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
-
-  @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
-}
-
-class _CalendarScreenState extends State<CalendarScreen> {
-  var habitNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +26,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ),
         onPressed: () => showDialog(
           context: context,
-          builder: (context) => AddHabitDialog(
-            habitNameController: habitNameController,
-            onPressed: () {
-              sl<HabitRepository>().addHabit(habitNameController.text);
-              habitNameController.clear();
-              Navigator.pop(context);
-            },
-          ),
+          builder: (context) => const AddHabitDialog(),
         ),
       ),
       appBar: AppBar(
@@ -58,45 +45,48 @@ class _CalendarScreenState extends State<CalendarScreen> {
               sl<HabitUtil>().getDatasets(habitProvider.habitCompletions);
           return Padding(
             padding: const EdgeInsets.all(20),
-            child: SingleChildScrollView(
+            child: ListView(
               physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  HabitMap(
-                    datasets: datasets,
-                    startDate: habitProvider.firstEntryDate,
-                    onClick: (value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(datasets[value].toString())));
-                    },
-                  ),
-                  const SizedBox(height: 30),
-                  Column(
-                    children:
-                        List.generate(habitProvider.habits.length, (index) {
-                      final habit = habitProvider.habits[index];
-                      final isCompleted = habitProvider.habitCompletions.any(
-                          (c) =>
-                              c.habitId == habit.id &&
-                              c.date.year == DateTime.now().year &&
-                              c.date.month == DateTime.now().month &&
-                              c.date.day == DateTime.now().day);
-                      return Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () => sl<HabitRepository>()
-                                .updateHabitCompletion(habit.id),
-                            child: HabitListTile(
-                                habit: habit, isCompleted: isCompleted),
-                          ),
-                          if (index < habitProvider.habits.length - 1)
-                            const SizedBox(height: 10),
-                        ],
-                      );
-                    }),
-                  ),
-                ],
-              ),
+              children: [
+                HabitMap(
+                  datasets: datasets,
+                  startDate: habitProvider.firstEntryDate,
+                  onClick: (value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(datasets[value].toString())));
+                  },
+                ),
+                const SizedBox(height: 30),
+                ...List.generate(habitProvider.habits.length, (index) {
+                  final habit = habitProvider.habits[index];
+                  final isCompleted = habitProvider.habitCompletions.any((c) =>
+                      c.habitId == habit.id &&
+                      c.date.year == DateTime.now().year &&
+                      c.date.month == DateTime.now().month &&
+                      c.date.day == DateTime.now().day);
+                  return Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () => sl<HabitRepository>()
+                            .updateHabitCompletion(habit.id),
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return UpdateHabitDialog(
+                                  habit: habit);
+                            },
+                          );
+                        },
+                        child: HabitListTile(
+                            habit: habit, isCompleted: isCompleted),
+                      ),
+                      if (index < habitProvider.habits.length - 1)
+                        const SizedBox(height: 10),
+                    ],
+                  );
+                }),
+              ],
             ),
           );
         },

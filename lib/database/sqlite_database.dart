@@ -99,6 +99,11 @@ class HabitDatabase {
     }
   }
 
+  Future updateHabit(int id, String name) async {
+    final db = await database;
+    await db.update('habits', {'name': name}, where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<List<Habit>> getHabits() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('habits');
