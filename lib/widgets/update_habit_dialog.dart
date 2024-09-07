@@ -166,7 +166,10 @@ class _UpdateHabitDialogState extends State<UpdateHabitDialog> {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => sl<HabitRepository>().deleteHabit(widget.habit.id),
+          onPressed: () {
+            sl<HabitRepository>().deleteHabit(widget.habit.id);
+            Navigator.pop(context);
+          },
           child: const Text('Delete'),
         ),
         TextButton(

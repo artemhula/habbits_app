@@ -57,6 +57,7 @@ class CalendarScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 30),
+                
                 ...List.generate(habitProvider.habits.length, (index) {
                   final habit = habitProvider.habits[index];
                   final isCompleted = habitProvider.habitCompletions.any((c) =>
@@ -73,8 +74,7 @@ class CalendarScreen extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return UpdateHabitDialog(
-                                  habit: habit);
+                              return UpdateHabitDialog(habit: habit);
                             },
                           );
                         },
@@ -86,6 +86,14 @@ class CalendarScreen extends StatelessWidget {
                     ],
                   );
                 }),
+                if (habitProvider.habits.isEmpty)
+                  Expanded(
+                    child: Text(
+                      'No habits yet.\n Add one by tapping the + button below.',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
               ],
             ),
           );

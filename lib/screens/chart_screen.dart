@@ -55,21 +55,25 @@ class ChartScreen extends StatelessWidget {
                         'Completions by habit',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                      const SizedBox(height: 15),
-                      HabitPicker(
-                        habits: provider.habits,
-                        onSelected: (int? value) {
-                          provider.pickedHabitId = value;
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      if (provider.pickedHabitId != null)
-                        HabitMap(
-                          datasets: sl<HabitUtil>().getDatasetsByHabit(
-                              provider.habitCompletions,
-                              provider.pickedHabitId!),
-                          startDate: provider.firstEntryDate,
+                        const SizedBox(height: 15),
+                      if (provider.habits.isEmpty)
+                        const Text('No habits available'),
+                      if (provider.habits.isNotEmpty) ...[
+                        HabitPicker(
+                          habits: provider.habits,
+                          onSelected: (int? value) {
+                            provider.pickedHabitId = value;
+                          },
                         ),
+                        const SizedBox(height: 15),
+                        if (provider.pickedHabitId != null)
+                          HabitMap(
+                            datasets: sl<HabitUtil>().getDatasetsByHabit(
+                                provider.habitCompletions,
+                                provider.pickedHabitId!),
+                            startDate: provider.firstEntryDate,
+                          ),
+                      ],
                     ],
                   ),
                 ),
