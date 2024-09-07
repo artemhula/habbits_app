@@ -1,3 +1,4 @@
+// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:habits/models/habit.dart';
 import 'package:habits/models/habit_completion.dart';
@@ -26,7 +27,10 @@ class HabitDatabase {
     await db.execute('''
     CREATE TABLE habits (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL
+      name TEXT NOT NULL,
+      reminder_enable INTEGER NOT NULL,
+      reminder_hours INTEGER,
+      reminder_minutes INTEGER
     )
     ''');
 
@@ -55,7 +59,8 @@ class HabitDatabase {
   Future saveFirstEntryDate() async {
     final db = await database;
     if ((await db.query('app_info')).isEmpty) {
-      await db.insert('app_info', {'first_entry_date': DateTime.now().toIso8601String()});
+      await db.insert(
+          'app_info', {'first_entry_date': DateTime.now().toIso8601String()});
     }
   }
 
@@ -65,9 +70,15 @@ class HabitDatabase {
     return DateTime.parse(maps[0]['first_entry_date']);
   }
 
-  Future addHabit(String name) async {
+  Future addHabit(String name, bool reminderEnable, int? reminderHours,
+      int? reminderMinutes) async {
     final db = await database;
-    await db.insert('habits', {'name': name});
+    await db.insert('habits', {
+      'name': name,
+      'reminder_enable': reminderEnable ? 1 : 0,
+      'reminder_hours': reminderHours,
+      'reminder_minutes': reminderMinutes
+    });
   }
 
   Future deleteHabit(int id) async {
@@ -78,8 +89,10 @@ class HabitDatabase {
 
   Future addHabitCompletion(int habitId) async {
     final db = await database;
-    await db.insert('habit_completions',
-        {'habit_id': habitId, 'date': DateUtils.dateOnly(DateTime.now()).toIso8601String()});
+    await db.insert('habit_completions', {
+      'habit_id': habitId,
+      'date': DateUtils.dateOnly(DateTime.now()).toIso8601String()
+    });
   }
 
   Future deleteHabitCompetion(int habitId, String date) async {
@@ -91,17 +104,32 @@ class HabitDatabase {
   Future toggleHabitCompletion(int habitId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('habit_completions',
-        where: 'habit_id = ? AND date = ?', whereArgs: [habitId, DateUtils.dateOnly(DateTime.now()).toIso8601String()]);
+        where: 'habit_id = ? AND date = ?',
+        whereArgs: [
+          habitId,
+          DateUtils.dateOnly(DateTime.now()).toIso8601String()
+        ]);
     if (maps.isEmpty) {
       addHabitCompletion(habitId);
     } else {
-      deleteHabitCompetion(habitId, DateUtils.dateOnly(DateTime.now()).toIso8601String());
+      deleteHabitCompetion(
+          habitId, DateUtils.dateOnly(DateTime.now()).toIso8601String());
     }
   }
 
-  Future updateHabit(int id, String name) async {
+  Future updateHabit(int id,  String name, bool reminderEnable,
+      int? reminderHours, int? reminderMinutes) async {
     final db = await database;
-    await db.update('habits', {'name': name}, where: 'id = ?', whereArgs: [id]);
+    await db.update(
+        'habits',
+        {
+          'name': name,
+          'reminder_enable': reminderEnable ? 1 : 0,
+          'reminder_hours': reminderHours,
+          'reminder_minutes': reminderMinutes
+        },
+        where: 'id = ?',
+        whereArgs: [id]);
   }
 
   Future<List<Habit>> getHabits() async {
@@ -111,6 +139,9 @@ class HabitDatabase {
       return Habit(
         id: maps[i]['id'],
         name: maps[i]['name'],
+        reminderEnable: maps[i]['reminder_enable'] == 1,
+        reminderHours: maps[i]['reminder_hours'],
+        reminderMinutes: maps[i]['reminder_minutes'],
       );
     });
   }
@@ -139,4 +170,13 @@ class HabitDatabase {
       );
     });
   }
+
+  // Future<void> deleteDatabase() async {
+  //   final databasePath = await getDatabasesPath();
+  //   final path = join(databasePath, 'notes.db');
+  //   await File(path).delete();
+    
+  // }
 }
+
+
