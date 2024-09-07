@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:habits/database/sqlite_database.dart';
 import 'package:habits/models/habit.dart';
 import 'package:habits/models/habit_completion.dart';
@@ -33,7 +34,6 @@ class HabitRepositoryImpl implements HabitRepository {
       _notificationService.scheduleDailyNotification(
         habit.id,
         habit.name,
-        'Did you complete your habit today?',
         habit.reminderHours!,
         habit.reminderMinutes!,
       );
@@ -44,6 +44,18 @@ class HabitRepositoryImpl implements HabitRepository {
   Future addHabitCompletion(int habitId) async {
     await _db.addHabitCompletion(habitId);
     _provider.habitCompletions = await _db.getAllHabitCompletions();
+    final habit =
+        _provider.habits.firstWhere((element) => element.id == habitId);
+    if (habit.reminderEnable) {
+      await _notificationService.cancelNotification(habitId);
+      _notificationService.scheduleDailyNotification(
+        habit.id,
+        habit.name,
+        habit.reminderHours!,
+        habit.reminderMinutes!,
+        isCompleted: true,
+      );
+    }
   }
 
   @override
@@ -63,14 +75,14 @@ class HabitRepositoryImpl implements HabitRepository {
   @override
   Future updateHabit(int id, String name, bool reminderEnable,
       {int? reminderHours, int? reminderMinutes}) async {
-    _db.updateHabit(id, name, reminderEnable, reminderHours, reminderMinutes);
+    await _db.updateHabit(
+        id, name, reminderEnable, reminderHours, reminderMinutes);
     _provider.habits = await _db.getHabits();
     if (reminderEnable) {
       final habit = _provider.habits.firstWhere((element) => element.id == id);
       _notificationService.scheduleDailyNotification(
         habit.id,
         habit.name,
-        'Did you complete your habit today?',
         habit.reminderHours!,
         habit.reminderMinutes!,
       );
@@ -83,6 +95,22 @@ class HabitRepositoryImpl implements HabitRepository {
   Future updateHabitCompletion(int habitId) async {
     await _db.toggleHabitCompletion(habitId);
     _provider.habitCompletions = await _db.getAllHabitCompletions();
+    final habit =
+        _provider.habits.firstWhere((element) => element.id == habitId);
+    if (habit.reminderEnable) {
+      await _notificationService.cancelNotification(habitId);
+      _notificationService.scheduleDailyNotification(
+        habit.id,
+        habit.name,
+        habit.reminderHours!,
+        habit.reminderMinutes!,
+        isCompleted: _provider.habitCompletions.any(
+          (element) =>
+              element.habitId == habitId &&
+              element.date == DateUtils.dateOnly(DateTime.now()),
+        ),
+      );
+    }
   }
 
   @override
@@ -91,10 +119,7 @@ class HabitRepositoryImpl implements HabitRepository {
     _provider.habits = await _db.getHabits();
     _provider.habitCompletions = await _db.getAllHabitCompletions();
     _provider.firstEntryDate = await _db.getFirstEntryDate();
-    try {
-      _provider.pickedHabitId = _provider.habits.first.id;
-    } catch (e) {
-      _provider.pickedHabitId = null;
-    }
+    _provider.pickedHabitId =
+        _provider.habits.isNotEmpty ? _provider.habits.first.id : null;
   }
 }

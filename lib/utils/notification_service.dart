@@ -21,12 +21,12 @@ class NotificationService {
   }
 
   Future<void> scheduleDailyNotification(
-      int id, String title, String body, int hours, int minutes) async {
+      int id, String title, int hours, int minutes, {bool isCompleted = false}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
-      body,
-      _nextTime(hours, minutes),
+      'Did you complete your habit today?',
+      _nextTime(hours, minutes, isCompleted),
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'daily notification channel id',
@@ -40,11 +40,11 @@ class NotificationService {
     );
   }
 
-  tz.TZDateTime _nextTime(int hours, int minutes) {
+  tz.TZDateTime _nextTime(int hours, int minutes, isCompleted) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hours, minutes);
-    if (scheduledDate.isBefore(now)) {
+    if (scheduledDate.isBefore(now) || isCompleted) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
