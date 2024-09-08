@@ -58,7 +58,10 @@ class HabitUtil {
       int index = completionCountsByDate.keys.toList().indexOf(entry.key);
       return BarChartGroupData(x: index, barRods: [
         BarChartRodData(
-            toY: entry.value.toDouble(), width: 20, color: Colors.green),
+          toY: entry.value.toDouble(),
+          width: 20,
+          color: const Color.fromARGB(255, 66, 191, 0),
+        ),
       ]);
     }).toList();
     return barGroups;

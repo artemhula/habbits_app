@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.4.1"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      sha256: cb6a278ef2dbb298455e1a713bda08524a175630ec643a242c399c932a0a1f7d
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.1"
   args:
     dependency: transitive
     description:
@@ -451,6 +459,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  lottie_tgs:
+    dependency: "direct main"
+    description:
+      name: lottie_tgs
+      sha256: "1067b396455cfe496674bdbfc9d9b9d99381004d7fd9e065488b83811b5f4408"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.1"
   matcher:
     dependency: transitive
     description:

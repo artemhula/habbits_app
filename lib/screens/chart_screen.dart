@@ -5,6 +5,7 @@ import 'package:habits/utils/habit_util.dart';
 import 'package:habits/widgets/habit_chart.dart';
 import 'package:habits/widgets/habit_map.dart';
 import 'package:habits/widgets/habit_picker.dart';
+import 'package:lottie_tgs/lottie.dart';
 import 'package:provider/provider.dart';
 
 class ChartScreen extends StatelessWidget {
@@ -55,12 +56,22 @@ class ChartScreen extends StatelessWidget {
                         'Completions by habit',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                        const SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       if (provider.habits.isEmpty)
-                        const Text('No habits available'),
+                        Column(
+                          children: [
+                            const Text('There are no habits to choose from'),
+                            Lottie.asset(
+                              'assets/no_data.tgs',
+                              height: MediaQuery.of(context).size.height * 0.25,
+                            ),
+                          ],
+                        ),
                       if (provider.habits.isNotEmpty) ...[
                         HabitPicker(
                           habits: provider.habits,
+                          initialSelection: provider.pickedHabitId ??
+                              provider.habits.first.id,
                           onSelected: (int? value) {
                             provider.pickedHabitId = value;
                           },

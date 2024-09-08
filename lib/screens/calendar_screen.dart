@@ -5,6 +5,7 @@ import 'package:habits/widgets/chart_button.dart';
 import 'package:habits/widgets/habit_list_tile.dart';
 import 'package:habits/widgets/habit_map.dart';
 import 'package:habits/widgets/streak.dart';
+import 'package:habits/widgets/streak_animation.dart';
 import 'package:habits/widgets/toggle_theme_button.dart';
 import 'package:habits/widgets/update_habit_dialog.dart';
 import 'package:provider/provider.dart';
@@ -45,55 +46,56 @@ class CalendarScreen extends StatelessWidget {
               sl<HabitUtil>().getDatasets(habitProvider.habitCompletions);
           return Padding(
             padding: const EdgeInsets.all(20),
-            child: ListView(
-              physics: const BouncingScrollPhysics(),
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                HabitMap(
-                  datasets: datasets,
-                  startDate: habitProvider.firstEntryDate,
-                  onClick: (value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(datasets[value].toString())));
-                  },
-                ),
-                const SizedBox(height: 30),
-                
-                ...List.generate(habitProvider.habits.length, (index) {
-                  final habit = habitProvider.habits[index];
-                  final isCompleted = habitProvider.habitCompletions.any((c) =>
-                      c.habitId == habit.id &&
-                      c.date.year == DateTime.now().year &&
-                      c.date.month == DateTime.now().month &&
-                      c.date.day == DateTime.now().day);
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () => sl<HabitRepository>()
-                            .updateHabitCompletion(habit.id),
-                        onLongPress: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return UpdateHabitDialog(habit: habit);
-                            },
-                          );
-                        },
-                        child: HabitListTile(
-                            habit: habit, isCompleted: isCompleted),
-                      ),
-                      if (index < habitProvider.habits.length - 1)
-                        const SizedBox(height: 10),
-                    ],
-                  );
-                }),
-                if (habitProvider.habits.isEmpty)
-                  Expanded(
-                    child: Text(
-                      'No habits yet.\n Add one by tapping the + button below.',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge,
+                ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    HabitMap(
+                      datasets: datasets,
+                      startDate: habitProvider.firstEntryDate,
+                      onClick: (value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(datasets[value].toString())));
+                      },
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    if (habitProvider.habits.isNotEmpty)
+                      ...List.generate(habitProvider.habits.length, (index) {
+                        final habit = habitProvider.habits[index];
+                        final isCompleted = habitProvider.habitCompletions.any(
+                            (c) =>
+                                c.habitId == habit.id &&
+                                c.date.year == DateTime.now().year &&
+                                c.date.month == DateTime.now().month &&
+                                c.date.day == DateTime.now().day);
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                sl<HabitRepository>()
+                                    .updateHabitCompletion(habit.id);
+                              },
+                              onLongPress: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return UpdateHabitDialog(habit: habit);
+                                  },
+                                );
+                              },
+                              child: HabitListTile(
+                                  habit: habit, isCompleted: isCompleted),
+                            ),
+                            if (index < habitProvider.habits.length - 1)
+                              const SizedBox(height: 10),
+                          ],
+                        );
+                      }),
+                  ],
+                ),
+                const StreakAnimation(),
               ],
             ),
           );

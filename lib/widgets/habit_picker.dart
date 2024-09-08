@@ -6,16 +6,17 @@ class HabitPicker extends StatelessWidget {
     super.key,
     required this.habits,
     required this.onSelected,
+    required this.initialSelection,
   });
 
   final List<Habit> habits;
   final void Function(int?) onSelected;
+  final int initialSelection;
 
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
-      
-      initialSelection: 1,
+      initialSelection: habits.first.id,
       width: MediaQuery.of(context).size.width * 0.7,
       menuStyle: MenuStyle(
         backgroundColor:

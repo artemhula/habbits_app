@@ -5,7 +5,7 @@ ThemeData lightTheme = ThemeData(
   colorScheme: ColorScheme.light(
     surface: Colors.grey[300]!,
     primary: Colors.grey[200]!,
-    tertiary: Colors.green[400]!,
+    tertiary: const Color.fromARGB(210, 66, 191, 0),
     inverseSurface: Colors.grey[900],
   ),
   textTheme: GoogleFonts.manropeTextTheme(),
@@ -32,7 +32,7 @@ ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
     surface: Colors.grey[900]!,
     primary: Colors.grey[800]!,
-    tertiary: Colors.green[400]!,
+    tertiary: const Color.fromARGB(210, 66, 191, 0),
     inverseSurface: Colors.grey[300],
   ),
   textTheme: GoogleFonts.manropeTextTheme().apply(
