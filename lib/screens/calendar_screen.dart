@@ -47,7 +47,7 @@ class CalendarScreen extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(20),
             child: Stack(
-              alignment: Alignment.center,
+              alignment: Alignment.bottomCenter,
               children: [
                 ListView(
                   physics: const BouncingScrollPhysics(),
@@ -95,6 +95,19 @@ class CalendarScreen extends StatelessWidget {
                       }),
                   ],
                 ),
+                if (habitProvider.habits.isEmpty)
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Add a new habit to get started!',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ],
+                  ),
                 const StreakAnimation(),
               ],
             ),

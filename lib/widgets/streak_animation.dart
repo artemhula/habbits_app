@@ -33,7 +33,7 @@ class _StreakAnimationState extends State<StreakAnimation> {
   void _handleStreakChange() {
     final habitProvider = Provider.of<HabitProvider>(context, listen: false);
 
-    if (habitProvider.streak > _previousStreak) {
+    if (habitProvider.streak > _previousStreak && _previousStreak != 0) {
       setState(() {
         _showAnimation = true;
         _previousStreak = habitProvider.streak;

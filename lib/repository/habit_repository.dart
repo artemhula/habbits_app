@@ -23,7 +23,7 @@ class HabitRepositoryImpl implements HabitRepository {
   final HabitDatabase _db;
   final HabitProvider _provider;
   final NotificationService _notificationService;
-
+  
   @override
   Future addHabit(String name, bool reminderEnable,
       {int? reminderHours, int? reminderMinutes}) async {

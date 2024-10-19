@@ -5,6 +5,7 @@ import 'package:habits/provider/habit_provider.dart';
 import 'package:habits/repository/habit_repository.dart';
 import 'package:habits/utils/habit_util.dart';
 import 'package:habits/utils/notification_service.dart';
+
 import 'provider/theme_provider.dart';
 
 final sl = GetIt.instance;
@@ -13,7 +14,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<ThemeProvider>(ThemeProvider());
   sl.registerSingleton<HabitProvider>(HabitProvider());
 
-  sl.registerSingleton(HabitDatabase.instance); 
+  sl.registerSingleton(HabitDatabase.instance);
   sl.registerSingleton<HabitUtil>(HabitUtil());
 
   sl.registerSingleton<FlutterLocalNotificationsPlugin>(

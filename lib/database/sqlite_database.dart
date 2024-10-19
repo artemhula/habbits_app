@@ -1,4 +1,3 @@
-// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:habits/models/habit.dart';
 import 'package:habits/models/habit_completion.dart';
@@ -117,7 +116,7 @@ class HabitDatabase {
     }
   }
 
-  Future updateHabit(int id,  String name, bool reminderEnable,
+  Future updateHabit(int id, String name, bool reminderEnable,
       int? reminderHours, int? reminderMinutes) async {
     final db = await database;
     await db.update(
@@ -175,8 +174,6 @@ class HabitDatabase {
   //   final databasePath = await getDatabasesPath();
   //   final path = join(databasePath, 'notes.db');
   //   await File(path).delete();
-    
+
   // }
 }
-
-
