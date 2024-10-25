@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:habits/models/habit_completion.dart';
+import 'package:habits/shared/models/habit_completion.dart';
 import 'package:intl/intl.dart';
 
 class HabitUtil {

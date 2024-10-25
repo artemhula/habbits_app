@@ -1,40 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:habits/locator.dart';
-import 'package:habits/models/habit.dart';
-import 'package:habits/repository/habit_repository.dart';
+import 'package:habits/shared/repository/habit_repository.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-class UpdateHabitDialog extends StatefulWidget {
-  const UpdateHabitDialog({
+class AddHabitDialog extends StatefulWidget {
+  const AddHabitDialog({
     super.key,
-    required this.habit,
   });
 
-  final Habit habit;
-
   @override
-  State<UpdateHabitDialog> createState() => _UpdateHabitDialogState();
+  State<AddHabitDialog> createState() => _AddHabitDialogState();
 }
 
-class _UpdateHabitDialogState extends State<UpdateHabitDialog> {
+class _AddHabitDialogState extends State<AddHabitDialog> {
   var habitNameController = TextEditingController();
-  late bool isChecked;
-  late int hours;
-  late int minutes;
-
-  @override
-  void initState() {
-    habitNameController.text = widget.habit.name;
-    isChecked = widget.habit.reminderEnable;
-    hours = widget.habit.reminderHours ?? TimeOfDay.now().hour;
-    minutes = widget.habit.reminderMinutes ?? TimeOfDay.now().minute;
-    super.initState();
-  }
+  var isChecked = false;
+  int hours = TimeOfDay.now().hour;
+  int minutes = TimeOfDay.now().minute;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Update habit'),
+      title: const Text('Add a new habit'),
       backgroundColor: Theme.of(context).colorScheme.surface,
       content: SizedBox(
         width: 300,
@@ -167,15 +154,7 @@ class _UpdateHabitDialogState extends State<UpdateHabitDialog> {
         ),
         TextButton(
           onPressed: () {
-            sl<HabitRepository>().deleteHabit(widget.habit.id);
-            Navigator.pop(context);
-          },
-          child: const Text('Delete'),
-        ),
-        TextButton(
-          onPressed: () {
-            sl<HabitRepository>().updateHabit(
-              widget.habit.id,
+            sl<HabitRepository>().addHabit(
               habitNameController.text,
               isChecked,
               reminderHours: isChecked ? hours : null,
@@ -184,7 +163,7 @@ class _UpdateHabitDialogState extends State<UpdateHabitDialog> {
             habitNameController.clear();
             Navigator.pop(context);
           },
-          child: const Text('Update'),
+          child: const Text('Add'),
         ),
       ],
     );

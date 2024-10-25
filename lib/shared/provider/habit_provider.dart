@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:habits/models/habit.dart';
-import 'package:habits/models/habit_completion.dart';
+import 'package:habits/shared/models/habit.dart';
+import 'package:habits/shared/models/habit_completion.dart';
 import 'package:habits/utils/habit_util.dart';
 
 class HabitProvider with ChangeNotifier {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:habits/app.dart';
 import 'package:habits/locator.dart';
-import 'package:habits/screens/calendar_screen.dart';
-import 'package:habits/provider/theme_provider.dart';
-import 'package:habits/provider/habit_provider.dart';
+import 'package:habits/features/habit_list/provider/theme_provider.dart';
+import 'package:habits/shared/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -23,15 +23,3 @@ void main() async {
   );
 }
 
-class HabitApp extends StatelessWidget {
-  const HabitApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'habits',
-      home: const CalendarScreen(),
-      theme: Provider.of<ThemeProvider>(context).theme,
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:habits/screens/chart_screen.dart';
+import 'package:habits/features/statistics/screens/chart_screen.dart';
 
 class ChartButton extends StatelessWidget {
   const ChartButton({

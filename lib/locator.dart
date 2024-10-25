@@ -1,12 +1,12 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
-import 'package:habits/database/sqlite_database.dart';
-import 'package:habits/provider/habit_provider.dart';
-import 'package:habits/repository/habit_repository.dart';
+import 'package:habits/shared/database/sqlite_database.dart';
+import 'package:habits/shared/provider/habit_provider.dart';
+import 'package:habits/shared/repository/habit_repository.dart';
 import 'package:habits/utils/habit_util.dart';
 import 'package:habits/utils/notification_service.dart';
 
-import 'provider/theme_provider.dart';
+import 'features/habit_list/provider/theme_provider.dart';
 
 final sl = GetIt.instance;
 

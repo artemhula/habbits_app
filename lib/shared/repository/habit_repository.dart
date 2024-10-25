@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habits/database/sqlite_database.dart';
-import 'package:habits/models/habit.dart';
-import 'package:habits/models/habit_completion.dart';
-import 'package:habits/provider/habit_provider.dart';
+import 'package:habits/shared/database/sqlite_database.dart';
+import 'package:habits/shared/models/habit.dart';
+import 'package:habits/shared/models/habit_completion.dart';
+import 'package:habits/shared/provider/habit_provider.dart';
 import 'package:habits/utils/notification_service.dart';
 
 abstract class HabitRepository {

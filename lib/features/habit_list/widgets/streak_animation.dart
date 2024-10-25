@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:habits/provider/habit_provider.dart';
+import 'package:habits/shared/provider/habit_provider.dart';
 import 'package:lottie_tgs/lottie.dart';
 import 'package:provider/provider.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:habits/provider/habit_provider.dart';
+import 'package:habits/shared/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 
 class StreakWidget extends StatelessWidget {

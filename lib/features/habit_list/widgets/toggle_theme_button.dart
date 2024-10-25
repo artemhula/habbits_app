@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habits/provider/theme_provider.dart';
+import 'package:habits/features/habit_list/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class ToggleThemeButton extends StatelessWidget {

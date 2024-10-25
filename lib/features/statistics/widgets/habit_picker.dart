@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habits/models/habit.dart';
+import 'package:habits/shared/models/habit.dart';
 
 class HabitPicker extends StatelessWidget {
   const HabitPicker({

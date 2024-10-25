@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:habits/utils/habit_util.dart';
-import 'package:habits/widgets/add_habit_dialog.dart';
-import 'package:habits/widgets/chart_button.dart';
-import 'package:habits/widgets/habit_list_tile.dart';
-import 'package:habits/widgets/habit_map.dart';
-import 'package:habits/widgets/streak.dart';
-import 'package:habits/widgets/streak_animation.dart';
-import 'package:habits/widgets/toggle_theme_button.dart';
-import 'package:habits/widgets/update_habit_dialog.dart';
+import 'package:habits/features/habit_list/widgets/add_habit_dialog.dart';
+import 'package:habits/features/habit_list/widgets/chart_button.dart';
+import 'package:habits/features/habit_list/widgets/habit_list_tile.dart';
+import 'package:habits/shared/widgets/habit_map.dart';
+import 'package:habits/features/habit_list/widgets/streak.dart';
+import 'package:habits/features/habit_list/widgets/streak_animation.dart';
+import 'package:habits/features/habit_list/widgets/toggle_theme_button.dart';
+import 'package:habits/features/habit_list/widgets/update_habit_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:habits/provider/habit_provider.dart';
-import 'package:habits/repository/habit_repository.dart';
+import 'package:habits/shared/provider/habit_provider.dart';
+import 'package:habits/shared/repository/habit_repository.dart';
 import 'package:habits/locator.dart';
 
 class CalendarScreen extends StatelessWidget {

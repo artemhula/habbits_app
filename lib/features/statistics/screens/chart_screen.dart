@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:habits/locator.dart';
-import 'package:habits/provider/habit_provider.dart';
+import 'package:habits/shared/provider/habit_provider.dart';
 import 'package:habits/utils/habit_util.dart';
-import 'package:habits/widgets/habit_chart.dart';
-import 'package:habits/widgets/habit_map.dart';
-import 'package:habits/widgets/habit_picker.dart';
+import 'package:habits/features/statistics/widgets/habit_chart.dart';
+import 'package:habits/shared/widgets/habit_map.dart';
+import 'package:habits/features/statistics/widgets/habit_picker.dart';
 import 'package:lottie_tgs/lottie.dart';
 import 'package:provider/provider.dart';
 
