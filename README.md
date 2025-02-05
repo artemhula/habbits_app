@@ -6,6 +6,10 @@ This is a habit tracking app inspired by the book *Atomic Habits* by James Clear
 
 Inspired by Clear's philosophy that small changes can lead to remarkable results, I decided to build this app to practically implement his advice and help others do the same.
 
+## 📸 Screenshots
+
+![Screenshots (4)](https://github.com/user-attachments/assets/81a82e95-447a-4c86-bba3-0945ae274e5d)
+
 ## 👀 Features
 
 - Track daily habits and view progress over time
@@ -13,7 +17,7 @@ Inspired by Clear's philosophy that small changes can lead to remarkable results
 - Add, edit, and delete habits
 - Set up reminders for habits
 - View habit statistics, such as streaks and completion rates
-- Choose themes to personalize the app experience
+- Choose themes
 
 ## 🛠️ Requirements
 
@@ -52,7 +56,3 @@ This project utilizes the following Flutter packages and technologies:
 - **Lottie TGS**: Rendering animations with Telegram stickers.
 
 For the full list of dependencies, refer to the `pubspec.yaml` file.
-
-## 🎥 Demonstration
-
-TBA
